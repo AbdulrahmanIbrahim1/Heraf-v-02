@@ -15,7 +15,7 @@ export default function Header() {
             <Nav.Link href="/" className='text-white'>Home</Nav.Link>
             <Nav.Link href="category" className='text-white'>categories</Nav.Link>
             <Nav.Link href="about" className='text-white'> about us</Nav.Link>
-            <Nav.Link href={isLogin ? "/profile" : "/login"} className='text-white'>profile</Nav.Link>
+            <Nav.Link href={isLogin ? "profile" : "login"} className='text-white'>profile</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
