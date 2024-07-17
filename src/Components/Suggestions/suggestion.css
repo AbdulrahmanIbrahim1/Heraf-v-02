@@ -1,0 +1,22 @@
+.box-account {
+  padding: 5px;
+  border: 1px solid white;
+border-radius: 5px;
+margin: 5px 2px;
+}
+
+.box-account-text {
+  font-size: 14px !important;
+}
+
+.box-account-text h3 {
+  font-size: 15px !important;
+  padding: 0;
+  margin: 0;
+}
+
+.box-account-text p {
+  font-size: 15px !important;
+  padding: 0;
+  margin: 0;
+}
