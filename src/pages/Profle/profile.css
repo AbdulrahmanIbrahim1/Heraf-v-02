@@ -1,0 +1,61 @@
+
+.prof-app {
+  background-image: url('../../images/wallpaperflare.com_wallpaper\ \(58\).jpg');
+  background-attachment: fixed;
+  /* height: 100vh; */
+  position: relative;
+}
+
+.landing {
+  /* background-color: rgb(6, 125, 204); */
+  min-height: 95vh;
+  height: 100% !important;
+  /* position: relative; */
+  overflow: auto;
+}
+
+.left-text {
+  position: relative;
+  color: white;
+  /* background-color: rgb(255, 65, 2); */
+}
+
+.text-prof {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.right-img {
+  position: relative;
+}
+
+.my-img {
+  width: 60%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* animation: upDown 2s timing-function delay iteration-count direction fill-mode; */
+}
+
+.my-img img {
+  border: 3px solid #0d6efd;
+  animation: upDown 5s infinite;
+}
+
+@keyframes upDown {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-30px);
+    /* Adjust the distance as needed */
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}

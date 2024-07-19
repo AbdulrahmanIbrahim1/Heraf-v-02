@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../Components/Header/Header'
 import { Button, Container, Row } from 'react-bootstrap'
 import './home.css'
@@ -12,6 +12,34 @@ import ClientPosts from '../../Components/ClientPosts/ClientPosts'
 export default function Home() {
 
   const [posts, setPosts] = useState('employ')
+  const [dataUser, setDataUser] = useState(null);
+
+
+  useEffect(() => {
+    /* providing token in bearer */
+    fetch('https://dummyjson.com/auth/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')} `,
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setDataUser(data)
+      });
+  }, [])
+
+  if (!dataUser) {
+    return <div className='d-flex align-items-center '>
+      <p>
+        Loading...
+      </p>
+      <div className="spinner-border text-primary mx-3" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
 
   return (
     <>
@@ -21,12 +49,14 @@ export default function Home() {
           <Row>
             <div className='col-lg-3 p-2 col-0 '>
               <Link to={'/profile'} className='text-decoration-none text-white' >
-                <SemiProfile />
+                <SemiProfile img={dataUser.image ? dataUser.image : ""}
+                  name={`${dataUser.firstName} ${dataUser.lastName}`}
+                  job={dataUser.company.title}
+                  location={dataUser.address.country} />
               </Link>
             </div>
-
             <div className='col-lg-6 p-2 forPosts'>
-              <WritePost />
+              <WritePost image={dataUser.image}/>
               <div className='allPosts box my-2 p-2 '>
                 <h3>Posts : </h3>
                 <div className='d-flex justify-content-around p-2'>

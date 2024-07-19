@@ -20,8 +20,8 @@
 
 /* .allPosts {
 } */
-.forPosts {
-  height: 92vh;
+.forPosts { 
+  height: 88vh;
   overflow-y: auto;
   scrollbar-width: none;
 }

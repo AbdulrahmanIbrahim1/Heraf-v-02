@@ -1,12 +1,22 @@
-.navbar-nav{
+.navbar-nav {
   padding-bottom: 5px;
 }
+
 .navbar-nav a {
   padding-bottom: 10px;
   transition: 0.8s;
 }
 
-.navbar-nav a:hover{
+.navbar-nav a:hover {
   color: rgb(6 45 100) !important;
   border-bottom: 1px solid black;
+}
+
+.logo-1 {
+  width: 10%;
+  height: 100%;
+}
+
+.logo-1 img {
+  filter: blur(0.7px) invert(1) sepia(1);
 }

@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* max-height: 90vh; */
+  overflow: hidden;
 }
 
 code {
@@ -12,10 +14,14 @@ code {
     monospace;
 }
 
-:root{
+:root {
   --main: red;
 }
-*{
+
+* {
   padding: 0;
   margin: 0;
+}
+.mdl-js{
+  overflow-y: auto;
 }
