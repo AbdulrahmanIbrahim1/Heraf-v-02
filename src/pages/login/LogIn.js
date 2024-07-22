@@ -116,6 +116,7 @@ export default function LogIn() {
         <Col className='left p-4 col-lg-6 col-md-12 col-12'>
           <div className='logo rounded-circle mx-4'>
             <img src={logo} className=' img-fluid' alt="city mall logo " />
+            <Link to={'acounts'}>acounts</Link>
           </div>
 
           <div className='login d-flex flex-column justify-content-center align-items-center'>
@@ -156,7 +157,6 @@ export default function LogIn() {
           </div>
         </Col>
       </Row>
-
     </>
   );
 }
