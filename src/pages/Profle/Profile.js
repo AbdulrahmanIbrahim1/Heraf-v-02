@@ -3,7 +3,9 @@ import Header from '../../Components/Header/Header'
 import { Button, Container, Row } from 'react-bootstrap'
 import './profile.css'
 import EmployPosts from '../../Components/EmployPosts/EmployPosts'
-
+import Cookies from 'js-cookie';
+import { useNavigate, useParams } from 'react-router-dom'
+import WritePost from '../../Components/writePost/WritePost'
 // const userData = {
 //   "id": 1,
 //   "firstName": "Abdelrahman",
@@ -19,25 +21,66 @@ import EmployPosts from '../../Components/EmployPosts/EmployPosts'
 
 
 export default function Profile() {
+
+  const [ifmyprofile, setifmyprofile] = useState(true)
+  const { id } = useParams()
+
+
+  const navigate = useNavigate()
+  const [posts, setPosts] = useState(true)
+
   const [dataUser, setDataUser] = useState(null);
+  const [showMessage, setShowMessage] = useState(false); // حالة لعرض الرسالة
 
   useEffect(() => {
-    /* providing token in bearer */
-    fetch('https://dummyjson.com/auth/me', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')} `,
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        setDataUser(data)
-      });
-  }, [])
+    console.log('Current ID:', id);
+    console.log('Current ID type:', typeof id);
+    if (!Cookies.get('token')) {
+      setShowMessage(true); // عرض الرسالة
+      setTimeout(() => {
+        navigate('/login'); // إعادة التوجيه بعد عرض الرسالة
+      }, 3000); // عرض الرسالة لمدة 3 ثوانٍ
+      return;
+    }
 
+    if (id) {
 
-  const [posts, setPosts] = useState(true)
+      fetch(`https://dummyjson.com/users/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log('data is ', data)
+          setDataUser(data)
+          setifmyprofile(false)
+        });
+    } else {
+      fetch('https://dummyjson.com/auth/me', {
+        method: 'GET',
+        headers: {
+          // 'Authorization': `Bearer ${localStorage.getItem('token')} `,
+          'Authorization': `Bearer ${Cookies.get('token')} `,
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          setDataUser(data)
+        });
+    }
+  }, [navigate, id])
+
+  if (showMessage) {
+    return (
+      <div className='d-flex flex-column align-items-center'>
+        <p className='alert alert-warning mt-3'>
+          You must log in to access the web app. Redirecting to login page...
+        </p>
+        <div className="spinner-border text-primary mx-3" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
   if (!dataUser) {
     return <div className='d-flex align-items-center '>
       <p>
@@ -73,17 +116,27 @@ export default function Profile() {
       </div>
       <div className='section1 p-3 '>
         <Container>
-          <Row>
-            <div className='col-6 col-lg-6 d-flex justify-content-center'>
-              <Button className='btn btn-primary' onClick={() => setPosts(true)} >Posts</Button>
+          <Row className='py-3'>
+            <div className={`col-6 col-lg-6  d-flex justify-content-center  ${!posts ? "align-items-start" : "align-items-center  flex-column"}`}>
+              <Button className='btn btn-primary w-20 ' onClick={() => setPosts(true)} >Posts</Button>
+              {posts && ifmyprofile && <div className='add-new-post w-5 my-2'>
+                <WritePost img={false} text={"add new post"} />
+              </div>}
             </div>
-            <div className='col-6 col-lg-6  d-flex justify-content-center'>
-              <Button className='btn btn-primary' onClick={() => setPosts(false)} >Projects</Button>
+            <div className={`col-6 col-lg-6  d-flex justify-content-center  ${posts ? "align-items-start" : "align-items-center  flex-column"}`}>
+              <Button className='btn btn-primary w-20 ' onClick={() => setPosts(false)} >Projects</Button>
+              {!posts && ifmyprofile && <div className='add-new-post w-5 my-2'>
+                <WritePost img={false} text={"add new project"} />
+              </div>}
             </div>
           </Row>
           <div>
             {
-              posts ? <EmployPosts bord={'border-black'} userId={dataUser.id} /> : <Profile />
+              posts ?
+                <EmployPosts bord={'border-black'} userId={dataUser.id} />
+                : <div className="alert alert-primary m-3 text-center" role="alert">
+                  No projects
+                </div>
             }
           </div>
         </Container>

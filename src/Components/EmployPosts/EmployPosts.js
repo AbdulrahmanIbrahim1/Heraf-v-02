@@ -3,7 +3,7 @@ import './empPosts.css'
 import profileImg from '../../images/Picsart_22-08-28_04-42-23-038.jpg'
 import { Button } from 'react-bootstrap'
 
-export default function EmployPosts({ bord, userId }) {
+export default function EmployPosts({ bord, userId, noPosts = 'no posts yet'}) {
   const [posts, setPosts] = useState([])
   const [like, setlike] = useState(false)
   const [disLike, setDisLike] = useState(false)
@@ -29,7 +29,7 @@ export default function EmployPosts({ bord, userId }) {
   
   if (posts.length===0) {
     return <div className="alert alert-primary m-3 text-center" role="alert">
-      no posts yet
+      {noPosts}
     </div>
   }
   

@@ -1,11 +1,20 @@
-import React, {  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import './login.css'
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.png'
+// import Cookies from 'js-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserlLogin, getError, getIsUserLogin, getStatus } from '../../RTK/slices/userSlice';
+import { STATUS } from '../../RTK/status';
 
 
 export default function LogIn() {
+  const status = useSelector(getStatus);
+  const isUserLogin = useSelector(getIsUserLogin);
+  const geterror = useSelector(getError);
+  const dispatch = useDispatch()
+
   const [mail, setMail] = useState("")
   const [pass, setPass] = useState("")
   const navigate = useNavigate()
@@ -15,44 +24,75 @@ export default function LogIn() {
   const [passError, setpassError] = useState("");
   const [errorMailOrPass, setErrorMailOrPass] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    try {
-      const response = await fetch('https://dummyjson.com/user/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: mail,
-          password: pass,
-          expiresInMins: 30, // optional, defaults to 60
-        })
-      });
+  useEffect(() => {
+    if (status === STATUS.SUCCEEDED && isUserLogin) {
+      navigate("/profile");
+    }
+    if (status === STATUS.LOADING) {
+      setErrorMailOrPass('loading . . . ');
 
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log(data);
-        localStorage.setItem('token', data.token)
-        navigate("/profile");
-      } else {
-        // Handling non-200 responses
-        setErrorMailOrPass("The email or password is incorrect or empty");
-        setpassError('');
-        setEmailError('');
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      setErrorMailOrPass("An error occurred. Please try again later.");
+    }
+    if (status === STATUS.FAILD) {
+      setErrorMailOrPass(geterror + '  try agin later ');
       setpassError('');
       setEmailError('');
     }
+  }, [status, isUserLogin, geterror, navigate]);
+
+
+
+  const expiresInMins = 30;
+  const expiresInDays = expiresInMins / (60 * 24);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (mail && pass) {
+      try {
+        dispatch(fetchUserlLogin({ mail, pass, expiresInMins, expiresInDays }))
+      } catch {
+        setErrorMailOrPass("An error occurred. Please try again later.");
+      }
+      console.log('status is ', status);
+      console.log('isUserLogin is ', isUserLogin);
+    }
+
+    // try {
+    //   const response = await fetch('https://dummyjson.com/user/login', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({
+    //       username: mail,
+    //       password: pass,
+    //       expiresInMins: expiresInMins, // optional, defaults to 60
+    //     })
+    //   });
+
+    //   const data = await response.json();
+    //   if (response.ok) {
+    //     console.log(data);
+    //     // localStorage.setItem('token', data.token)
+    //     Cookies.set('token', data.token, { expires: expiresInDays })
+    //     navigate("/profile");
+    //   } else {
+    //     // Handling non-200 responses
+    //     setErrorMailOrPass("The email or password is incorrect or empty");
+    //     setpassError('');
+    //     setEmailError('');
+    //   }
+    // } catch (error) {
+    //   console.error("Error during login:", error);
+    //   setErrorMailOrPass("An error occurred. Please try again later.");
+    //   setpassError('');
+    //   setEmailError('');
+    // }
   };
 
 
   const handleBlurEmail = (e) => {
     if (e.target.value.trim() === "") {
       setEmailError("This field is required: Please enter your email");
+      setErrorMailOrPass('')
     } else {
       setEmailError("");
     }
@@ -61,6 +101,7 @@ export default function LogIn() {
   const handleBlurPass = (e) => {
     if (e.target.value.trim() === "") {
       setpassError("This field is required: Please enter your Password");
+      setErrorMailOrPass('')
     } else {
       setpassError("");
     }

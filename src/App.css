@@ -1,7 +1,8 @@
- /* .App {
-position: relative;
-z-index: -4;
-} */
+ .App {
+  min-height: 100vh;
+  min-width: 100vw;
+  position: relative;
+}
 /*
 .App-logo {
   height: 40vmin;

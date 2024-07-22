@@ -59,3 +59,10 @@
     transform: translateY(0);
   }
 }
+.w-20{
+  width: 20% !important;
+}
+.add-new-post{
+  width: 50%;
+
+}
