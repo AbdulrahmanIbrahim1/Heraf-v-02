@@ -12,6 +12,7 @@ export default function SignUp() {
   const [confirmPass, setConfirmPass] = useState('')
   const [mail, setMail] = useState('')
   const [error, setError] = useState('')
+  console.log(confirmPass);
 
   const handelChange = (type, e) => {
     switch (type) {
