@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.png'
 // import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserlLogin, getError, getIsUserLogin, getStatus } from '../../RTK/slices/userSlice';
+import { fetchUserLogin, getError, getIsUserLogin, getStatus } from '../../RTK/slices/userSlice';
 import { STATUS } from '../../RTK/status';
 
 
@@ -49,7 +49,7 @@ export default function LogIn() {
     e.preventDefault();
     if (mail && pass) {
       try {
-        dispatch(fetchUserlLogin({ mail, pass, expiresInMins, expiresInDays }))
+        dispatch(fetchUserLogin({ mail, pass, expiresInMins, expiresInDays }))
       } catch {
         setErrorMailOrPass("An error occurred. Please try again later.");
       }

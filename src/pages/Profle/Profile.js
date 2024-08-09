@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../../Components/Header/Header'
+// import Header from '../../Components/Header/Header'
 import { Button, Container, Row } from 'react-bootstrap'
 import './profile.css'
 import EmployPosts from '../../Components/EmployPosts/EmployPosts'
 import Cookies from 'js-cookie';
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import WritePost from '../../Components/writePost/WritePost'
 // const userData = {
 //   "id": 1,
@@ -20,11 +20,19 @@ import WritePost from '../../Components/writePost/WritePost'
 
 
 
+const skills = [
+  "html", "css", "react"
+]
+
+
 export default function Profile() {
 
   const [ifmyprofile, setifmyprofile] = useState(true)
   const { id } = useParams()
 
+
+  const [newSkill, setNewSkill] = useState("")
+  const [addNewSkill, setAddNewSkill] = useState(false)
 
   const navigate = useNavigate()
   const [posts, setPosts] = useState(true)
@@ -94,17 +102,44 @@ export default function Profile() {
   return (
     <>
       <div className='prof-app'>
-        <Header className='position-relative' />
-        <Container>
-          <Row className='landing'>
+        {addNewSkill && <div>
+          <div className='overlay overlay2' onClick={(e) => setAddNewSkill(false)}></div> &&
+          <div className='add-skill'>
+            <label htmlFor="skill">write skill</label>
+            <input type="text" name="skill" id='skill' onChange={(e) => setNewSkill(e.target.value)}  autoFocus/>
+            <input type="button" name="" value="add skill" className='btn btn-primary' onClick={()=>{
+              newSkill ?
+              skills.push(newSkill):<></>;
+              setNewSkill("")
+              setAddNewSkill(false)
+            }} />
+          </div>
+        </div>}
+        {/* <Header className='position-relative' /> */}
+        <Container >
+          <Row className='landing position-relative'>
             <div className='left-text col-lg-6 col-md-12 col-12 '>
               <div className='text-prof '>
                 <h3>{`${dataUser.firstName} ${dataUser.lastName}`}</h3>
                 <p>{`Job : ${dataUser.company.title}`}</p>
+                <ul >
+                  {skills.map((skill,index)=>{
+                    return <li key={index}>{skill}</li>
+                  },)}
+                </ul>
+                {ifmyprofile &&<button class="btn-add-skill btn btn-primary" onClick={(e) => setAddNewSkill(true)}>
+                  Add skill
+                </button>}
                 <p>{`Phone : ${dataUser.phone}`}</p>
-                <p>{ }</p>
+                {!ifmyprofile&&<div>
+                <button className='btn btn-primary'>follow</button>
+                  <Link to={"/messages"}>
+                <button className='btn btn-primary mx-2' >message</button>
+                </Link>
+                </div>}
               </div>
             </div>
+
             {/* == */}
             <div className='right-img col-lg-6 col-md-12 col-12'>
               <div className='my-img img-fluid'>
@@ -112,6 +147,7 @@ export default function Profile() {
               </div>
             </div>
           </Row>
+
         </Container>
       </div>
       <div className='section1 p-3 '>

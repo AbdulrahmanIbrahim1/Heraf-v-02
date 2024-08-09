@@ -17,6 +17,9 @@ export default function Home() {
   const [showMessage, setShowMessage] = useState(false); // حالة لعرض الرسالة
 
 
+
+
+
   useEffect(() => {
     if (!Cookies.get('token')) {
       setShowMessage(true); // عرض الرسالة
@@ -109,7 +112,7 @@ export default function Home() {
   return (
     <>
       <div className='home '>
-        <Header />
+        {/* <Header /> */}
         <Container className='text-white'>
           <Row>
             <div className='col-lg-3 p-2 col-0 '>
