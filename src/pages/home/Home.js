@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../../Components/Header/Header'
+// import Header from '../../Components/Header/Header'
 import { Button, Container, Row } from 'react-bootstrap'
 import './home.css'
 import SemiProfile from '../../Components/semiProfile/SemiProfile'
